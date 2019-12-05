@@ -1,20 +1,22 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/iamMarkchu/alpha/lib/orm"
+	"github.com/iamMarkchu/alpha/lib/config"
 	"net/http"
 )
 
 type IndexController struct {
-
 }
 
 // router / [get]
-func (c *IndexController) Index(ctx *gin.Context)  {
-	result, _ := orm.NewEngine().QueryString("SELECT * FROM articles")
+func (c *IndexController) Index(ctx *gin.Context) {
+	configInstance := config.GetConfigInstance()
+	result := configInstance.Get("articles")
+	fmt.Println(result)
 	ctx.HTML(http.StatusOK, "index/index.htm", gin.H{
-		"title": "homepage",
+		"title":  "homepage",
 		"result": result,
 	})
 }
